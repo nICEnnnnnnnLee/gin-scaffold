@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"gin_scaffold/app/demo_404_not_found"
 	"gin_scaffold/app/demo_data_bind"
 	"gin_scaffold/app/demo_html_template"
 	"gin_scaffold/app/demo_params_get"
@@ -10,6 +11,7 @@ import (
 	"gin_scaffold/app/demo_router_middleware"
 	"gin_scaffold/app/demo_sync_async"
 	"gin_scaffold/middlewares"
+	"gin_scaffold/middlewares/modify_header"
 	recover_mid "gin_scaffold/middlewares/recover"
 	logger "gin_scaffold/middlewares/test_logger"
 	"gin_scaffold/routers"
@@ -33,6 +35,7 @@ func main() {
 	// 初始化中间件, 必须要在路由之前挂载
 	{
 		middlewares.Include(
+			modify_header.Middlewares,
 			logger.Middlewares,
 			recover_mid.Middlewares,
 		)
@@ -48,12 +51,13 @@ func main() {
 			demo_sync_async.Routers,
 			demo_router_middleware.Routers,
 			demo_redirect.Routers,
+			demo_404_not_found.Routers,
 		)
 		routers.ApplyTo(engine)
 	}
 
 	// 设置404
-	engine.NoRoute(demo_redirect.RedirectHandler)
+	engine.NoRoute(demo_404_not_found.NotFoundHandler)
 	// 设置模板路径
 	engine.LoadHTMLGlob("public/templates/**/*")
 	// 设置静态资源路径
