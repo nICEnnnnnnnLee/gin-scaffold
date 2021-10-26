@@ -23,29 +23,34 @@ import (
 )
 
 func main() {
-	gin.SetMode(gin.ReleaseMode)
+	// gin.SetMode(gin.ReleaseMode)
 
 	//创建一个无中间件路由
 	engine := gin.New()
 	// 默认启动方式，包含 Logger、Recovery 中间件
 	// engine := gin.Default()
 
+	// 初始化中间件, 必须要在路由之前挂载
+	{
+		middlewares.Include(
+			logger.Middlewares,
+			recover_mid.Middlewares,
+		)
+		middlewares.ApplyTo(engine)
+	}
+
 	// 初始化路由
-	routers.Include(
-		demo_params_get.Routers,
-		demo_data_bind.Routers,
-		demo_html_template.Routers,
-		demo_sync_async.Routers,
-		demo_router_middleware.Routers,
-		demo_redirect.Routers,
-	)
-	routers.ApplyTo(engine)
-	// 初始化中间件
-	middlewares.Include(
-		logger.Middlewares,
-		recover_mid.Middlewares,
-	)
-	middlewares.ApplyTo(engine)
+	{
+		routers.Include(
+			demo_params_get.Routers,
+			demo_data_bind.Routers,
+			demo_html_template.Routers,
+			demo_sync_async.Routers,
+			demo_router_middleware.Routers,
+			demo_redirect.Routers,
+		)
+		routers.ApplyTo(engine)
+	}
 
 	// 设置404
 	engine.NoRoute(demo_redirect.RedirectHandler)
