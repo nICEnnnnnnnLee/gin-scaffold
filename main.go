@@ -88,7 +88,10 @@ func gracefulExitWeb(server *http.Server) {
 	<-done
 
 	now := time.Now()
-	err := server.Shutdown(context.Background())
+	// 10秒超时
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+	err := server.Shutdown(ctx)
 	if err != nil {
 		fmt.Println("err", err)
 	}
