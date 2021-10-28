@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"gin_scaffold/app/demo_404_not_found"
 	"gin_scaffold/app/demo_data_bind"
+	"gin_scaffold/app/demo_file_server"
 	"gin_scaffold/app/demo_html_template"
 	"gin_scaffold/app/demo_params_get"
 	"gin_scaffold/app/demo_redirect"
@@ -52,6 +53,7 @@ func main() {
 			demo_router_middleware.Routers,
 			demo_redirect.Routers,
 			demo_404_not_found.Routers,
+			demo_file_server.Routers,
 		)
 		routers.ApplyTo(engine)
 	}
