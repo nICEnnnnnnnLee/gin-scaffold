@@ -3,13 +3,10 @@ package main
 import (
 	"context"
 	"fmt"
-	_ "gin_scaffold/app"
+	_ "gin_scaffold/app" // 引用package, 以执行init函数
 	"gin_scaffold/app/demo_404_not_found"
 	"gin_scaffold/core"
-	"gin_scaffold/middlewares"
-	"gin_scaffold/middlewares/modify_header"
-	recover_mid "gin_scaffold/middlewares/recover"
-	logger "gin_scaffold/middlewares/test_logger"
+	_ "gin_scaffold/middlewares" // 引用package, 以执行init函数
 	"net/http"
 	"os"
 	"os/signal"
@@ -28,19 +25,9 @@ func main() {
 	// engine := gin.Default()
 
 	// 初始化中间件, 必须要在路由之前挂载
-	{
-		middlewares.Include(
-			modify_header.Middlewares,
-			logger.Middlewares,
-			recover_mid.Middlewares,
-		)
-		middlewares.ApplyTo(engine)
-	}
-
+	core.ApplyMiddlewareTo(engine)
 	// 初始化路由
-	{
-		core.ApplyRouterTo(engine)
-	}
+	core.ApplyRouterTo(engine)
 
 	// 设置404
 	engine.NoRoute(demo_404_not_found.NotFoundHandler)

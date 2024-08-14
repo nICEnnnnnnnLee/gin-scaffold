@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-//自定义中间件第1种定义方式
+// 自定义中间件第1种定义方式
 func Logger(c *gin.Context) {
 	t := time.Now()
 	fmt.Println("我是自定义中间件第1种定义方式---请求之前")
@@ -23,7 +23,7 @@ func Logger(c *gin.Context) {
 	log.Println(t2)
 }
 
-//自定义中间件第2种定义方式
+// 自定义中间件第2种定义方式
 func Logger2() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		t := time.Now()
