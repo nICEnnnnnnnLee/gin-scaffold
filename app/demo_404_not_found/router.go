@@ -1,10 +1,16 @@
 package demo_404_not_found
 
 import (
+	"gin_scaffold/core"
 	"io"
 
 	"github.com/gin-gonic/gin"
 )
+
+// 注册路由
+func init() {
+	core.IncludeRouter(Routers)
+}
 
 func Routers(e *gin.Engine) {
 	e.GET("/404", NotFoundHandler)

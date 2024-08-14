@@ -1,10 +1,16 @@
 package demo_router_middleware
 
 import (
+	"gin_scaffold/core"
 	logger "gin_scaffold/middlewares/test_logger"
 
 	"github.com/gin-gonic/gin"
 )
+
+// 注册路由
+func init() {
+	core.IncludeRouter(Routers)
+}
 
 func Routers(e *gin.Engine) {
 	e.GET("/middleware",

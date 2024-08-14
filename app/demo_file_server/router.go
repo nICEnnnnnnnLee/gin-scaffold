@@ -1,10 +1,16 @@
 package demo_file_server
 
 import (
+	"gin_scaffold/core"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
+
+// 注册路由
+func init() {
+	core.IncludeRouter(Routers)
+}
 
 func Routers(e *gin.Engine) {
 	e.GET("/file/*path", FileserverHandler)

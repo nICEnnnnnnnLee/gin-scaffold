@@ -3,19 +3,13 @@ package main
 import (
 	"context"
 	"fmt"
+	_ "gin_scaffold/app"
 	"gin_scaffold/app/demo_404_not_found"
-	"gin_scaffold/app/demo_data_bind"
-	"gin_scaffold/app/demo_file_server"
-	"gin_scaffold/app/demo_html_template"
-	"gin_scaffold/app/demo_params_get"
-	"gin_scaffold/app/demo_redirect"
-	"gin_scaffold/app/demo_router_middleware"
-	"gin_scaffold/app/demo_sync_async"
+	"gin_scaffold/core"
 	"gin_scaffold/middlewares"
 	"gin_scaffold/middlewares/modify_header"
 	recover_mid "gin_scaffold/middlewares/recover"
 	logger "gin_scaffold/middlewares/test_logger"
-	"gin_scaffold/routers"
 	"net/http"
 	"os"
 	"os/signal"
@@ -45,17 +39,7 @@ func main() {
 
 	// 初始化路由
 	{
-		routers.Include(
-			demo_params_get.Routers,
-			demo_data_bind.Routers,
-			demo_html_template.Routers,
-			demo_sync_async.Routers,
-			demo_router_middleware.Routers,
-			demo_redirect.Routers,
-			demo_404_not_found.Routers,
-			demo_file_server.Routers,
-		)
-		routers.ApplyTo(engine)
+		core.ApplyRouterTo(engine)
 	}
 
 	// 设置404
@@ -73,7 +57,7 @@ func main() {
 
 	// 自定义http.server
 	server := &http.Server{
-		Addr:           ":8081",
+		Addr:           "127.0.0.1:8081",
 		Handler:        engine,
 		ReadTimeout:    10 * time.Second,
 		WriteTimeout:   10 * time.Second,
